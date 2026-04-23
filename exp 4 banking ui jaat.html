@@ -1,0 +1,196 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Wallet App</title>
+
+<style>
+body {
+  margin: 0;
+  font-family: 'Segoe UI', sans-serif;
+  background: #f2f4f8;
+}
+
+.container {
+  max-width: 420px;
+  margin: auto;
+  padding: 20px;
+}
+
+/* Balance Card */
+.card {
+  background: linear-gradient(135deg, #5f9cff, #6dd5ed);
+  color: white;
+  padding: 20px;
+  border-radius: 20px;
+  box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+}
+
+.card h2 {
+  margin: 0;
+  font-weight: 400;
+}
+
+.balance {
+  font-size: 32px;
+  margin-top: 10px;
+  font-weight: bold;
+}
+
+/* Buttons */
+.actions {
+  display: flex;
+  gap: 10px;
+  margin: 20px 0;
+}
+
+button {
+  flex: 1;
+  padding: 14px;
+  border: none;
+  border-radius: 12px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.send {
+  background: #ff6b6b;
+  color: white;
+}
+
+.receive {
+  background: #1dd1a1;
+  color: white;
+}
+
+/* Form */
+.form {
+  display: none;
+  background: white;
+  padding: 15px;
+  border-radius: 15px;
+  margin-bottom: 20px;
+}
+
+input {
+  width: 100%;
+  padding: 10px;
+  margin: 8px 0;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+}
+
+.submit {
+  background: #4facfe;
+  color: white;
+}
+
+/* Transactions */
+.transactions {
+  background: white;
+  border-radius: 15px;
+  padding: 15px;
+}
+
+.transaction {
+  display: flex;
+  justify-content: space-between;
+  margin: 10px 0;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #eee;
+}
+
+.credit {
+  color: green;
+}
+
+.debit {
+  color: red;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+  <div class="card">
+    <h2>Available Balance</h2>
+    <div class="balance" id="balance">₹10000</div>
+  </div>
+
+  <div class="actions">
+    <button class="send" onclick="showForm('send')">Send</button>
+    <button class="receive" onclick="showForm('receive')">Receive</button>
+  </div>
+
+  <div class="form" id="form">
+    <input type="text" id="name" placeholder="Enter name">
+    <input type="number" id="amount" placeholder="Enter amount">
+    <button class="submit" onclick="addTransaction()">Submit</button>
+  </div>
+
+  <div class="transactions" id="transactions">
+    <h3>Transactions</h3>
+  </div>
+
+</div>
+
+<script>
+let balance = 10000;
+let type = "";
+
+function showForm(t) {
+  type = t;
+  document.getElementById("form").style.display = "block";
+}
+
+function addTransaction() {
+  const name = document.getElementById("name").value;
+  const amount = parseInt(document.getElementById("amount").value);
+
+  if (!name || !amount) {
+    alert("Please fill all fields");
+    return;
+  }
+
+  if (type === "send" && amount > balance) {
+    alert("Insufficient balance");
+    return;
+  }
+
+  const transactionDiv = document.createElement("div");
+  transactionDiv.classList.add("transaction");
+
+  const label = document.createElement("span");
+  label.innerText = name;
+
+  const amt = document.createElement("span");
+
+  if (type === "send") {
+    balance -= amount;
+    amt.innerText = "-₹" + amount;
+    amt.classList.add("debit");
+  } else {
+    balance += amount;
+    amt.innerText = "+₹" + amount;
+    amt.classList.add("credit");
+  }
+
+  transactionDiv.appendChild(label);
+  transactionDiv.appendChild(amt);
+
+  document.getElementById("transactions").appendChild(transactionDiv);
+  document.getElementById("balance").innerText = "₹" + balance;
+
+  document.getElementById("form").style.display = "none";
+  document.getElementById("name").value = "";
+  document.getElementById("amount").value = "";
+}
+</script>
+
+</body>
+</html>
+```
